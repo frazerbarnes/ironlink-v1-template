@@ -144,10 +144,12 @@ void StartDefaultTask(void const * argument)
 
   for(;;)
   {
-	  // Say hello world to the gateway
+
+	  // Send hello world to the gateway
 	  osDelay(9000);
 	  lora_module_send_command(RN_MAC_TX_CMD, "cnf 1 48656c6c6f20576f726c6421");
   }
+  /* USER CODE END StartDefaultTask */
 }
 
 /* USER CODE BEGIN Header_StartServiceTask */

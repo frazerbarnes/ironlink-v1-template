@@ -104,6 +104,8 @@ uint8_t lora_module_join_otaa() {
 	else if(strstr(buffer, "ok") != NULL) {
 		return 0;
 	}
+	else {
+		return 0;
+	}
 
-	return 0;
 }
