@@ -81,7 +81,7 @@ void StartDefaultTask(void const * argument)
   /* init code for USB_DEVICE */
   MX_USB_DEVICE_Init();
 
-  osDelay(50);
+  osDelay(1000);
 
   lora_module_reboot();
   osDelay(3000);
@@ -90,6 +90,11 @@ void StartDefaultTask(void const * argument)
   lora_module_set_gpio("GPIO4", 1);
   lora_module_set_gpio("GPIO5", 1);
 
+  osDelay(50);
+
+  // Set the device address
+  //CDC_Transmit_FS((uint8_t*)"RN_MAC_SET_DEV_EUI\r\n", sizeof("\r\n"));;
+  lora_module_send_command(RN_MAC_RESET_CMD, NULL);
   osDelay(50);
 
   // Set the device address
@@ -128,13 +133,16 @@ void StartDefaultTask(void const * argument)
 
   // Save the mac details
   //CDC_Transmit_FS((uint8_t*)"RN_JOIN_OTAA_MODE\r\n", sizeof("RN_JOIN_OTAA_MODE\r\n"));;
-  lora_module_send_command(RN_JOIN_OTAA_MODE, NULL);
-  osDelay(50);
+  //lora_module_send_command(RN_JOIN_OTAA_MODE, NULL);
+
+  // Try to join the network
+  while(lora_module_join_otaa()) {osDelay(1000);};
 
   for(;;)
   {
-	  osDelay(9000);
 
+	  // Send hello world to the gateway
+	  osDelay(9000);
 	  lora_module_send_command(RN_MAC_TX_CMD, "cnf 1 48656c6c6f20576f726c6421");
   }
   /* USER CODE END StartDefaultTask */

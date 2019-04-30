@@ -26,10 +26,6 @@
 #define RN_SYS_FACTORY_RESET        "sys factoryRESET"		//Reset all configurations to factory default
 #define RN_SYS_RESET                "sys reset"				//Reboot module
 
-#define RN_SYS_GET_NVM              "sys get nvm 3"			//Get EEPROM data. Address from 0x300 to 0x3FF
-#define RN_GET_NVM_LEN              13						//
-#define RN_SYS_SET_NVM              "sys set nvm 3"			//Set EEPROM data. Address from 0x300 to 0x3FF
-#define RN_SET_NVM_LEN              18						//
 #define RN_SYS_GET_VDD              "sys get vdd"			//Get the mV of the module. From 0 - 3600
 #define RN_SYS_GET_HWEUI            "sys get hweui"			//Get the HW eui address of the module
 #define RN_SYS_SET_PIN              "sys set pindig"		//Set PIN. GPIO0 - GPIO14, UART_CTS, UART_RTS, TEST0, TEST1. to 0 or 1.
@@ -75,9 +71,6 @@
 void lora_module_reboot();
 void lora_module_set_gpio(char *gpio, uint8_t state);
 void lora_module_send_command(char *command, char *value);
-void lora_module_get_hweui(char* hweui);
-
-uint8_t set_modem_config(char* setting, char* value);
-uint8_t send_command(char *command);
+uint8_t lora_module_join_otaa();
 
 #endif /* INC_LORA_H_ */

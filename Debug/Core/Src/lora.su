@@ -1,6 +1,4 @@
-lora.c:10:6:lora_module_reboot	0	static
-lora.c:26:6:lora_module_set_gpio	56	static
-lora.c:44:6:lora_module_send_command	80	static
-lora.c:80:6:lora_module_get_hweui	32	static
-lora.c:91:9:set_modem_config	48	static
-lora.c:107:9:send_command	40	static
+lora.c:10:6:lora_module_reboot	72	static
+lora.c:29:6:lora_module_set_gpio	56	static
+lora.c:47:6:lora_module_send_command	80	static
+lora.c:83:9:lora_module_join_otaa	72	static

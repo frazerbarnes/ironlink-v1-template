@@ -10,13 +10,16 @@
 void lora_module_reboot() {
 
 	char buffer[50] = {'\0'};
-	uint8_t i = 0;
+	uint8_t len = 0;
+	uint8_t i = 1;
 
 	while(i) {
 
-		HAL_UART_Transmit(&huart3, (uint8_t*)RN_SYS_RESET, sizeof(RN_SYS_RESET), 100);
+		len = sprintf(buffer, "%s\r\n", RN_SYS_RESET);
+		HAL_UART_Transmit(&huart3, (uint8_t*)buffer, len, 100);
+		memset(buffer, '\0', 50);
 		if (HAL_UART_Receive(&huart3, (uint8_t*)buffer, 50, 5000) == HAL_TIMEOUT) {
-			i = 1;
+			i = 0;
 		}
 
 		CDC_Transmit_FS((uint8_t*)buffer, 50);
@@ -77,57 +80,32 @@ void lora_module_send_command(char *command, char *value) {
 	}
 }
 
-void lora_module_get_hweui(char* hweui) {
+uint8_t lora_module_join_otaa() {
 
-	char buffer[16] = {'0'};
+	char buffer[50] = {'\0'};
+	uint8_t len = 0;
+	uint8_t i = 1;
 
-	HAL_UART_Transmit(&huart3, (uint8_t*)RN_SYS_GET_HWEUI, sizeof(RN_SYS_GET_HWEUI), 100);
-	HAL_UART_Receive(&huart3, (uint8_t*)buffer, 16, 500);
-	CDC_Transmit_FS((uint8_t*)buffer, 16);
+	while(i) {
 
-	strcpy(hweui, buffer);
-}
+		len = sprintf(buffer, "%s\r\n", RN_JOIN_OTAA_MODE);
+		HAL_UART_Transmit(&huart3, (uint8_t*)buffer, len, 100);
+		memset(buffer, '\0', 50);
+		if (HAL_UART_Receive(&huart3, (uint8_t*)buffer, 50, 500) == HAL_TIMEOUT) {
+			i = 0;
+		}
 
-uint8_t set_modem_config(char* setting, char* value) {
+		CDC_Transmit_FS((uint8_t*)buffer, 50);
+	}
 
-	char buffer[LORA_MAX_TRANSMIT_STRING] = {'\0'};
-	uint8_t buffer_transmit_size = 0;
-
-	buffer_transmit_size = sprintf(buffer, "%s %s \r\n", setting, value);
-
-	if (HAL_UART_Transmit(&huart3, (uint8_t*)buffer, buffer_transmit_size, 100) ==  HAL_OK) {
+	if(strstr(buffer, "accepted") != NULL) {
 		return 1;
+	}
+	else if(strstr(buffer, "accepted") != NULL) {
+		return 0;
 	}
 	else {
 		return 0;
-	}
-
-}
-
-uint8_t send_command(char *command) {
-
-	char buffer[LORA_MAX_TRANSMIT_STRING] = {'\0'};
-	uint8_t buffer_transmit_size = 0;
-
-	// Transmit command to the modem
-	HAL_UART_Transmit(&huart3, (uint8_t*)buffer, buffer_transmit_size, 1000);
-
-	// Clear our buffer
-	memset(buffer, '\0', LORA_MAX_TRANSMIT_STRING);
-
-	HAL_UART_Receive(&huart3, (uint8_t*)buffer, LORA_MAX_TRANSMIT_STRING, 1000);
-
-	CDC_Transmit_FS((uint8_t*)buffer, LORA_MAX_TRANSMIT_STRING);
-	osDelay(10);
-
-	if(strcmp(buffer, "ok")) {
-		return LORA_OK;
-	}
-	else if(strcmp(buffer, "invalid_param")) {
-		return LORA_INVALID_PARAM;
-	}
-	else {
-		return LORA_UNKNOWN_ERROR;
 	}
 
 }
