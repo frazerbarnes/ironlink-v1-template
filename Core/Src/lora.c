@@ -101,7 +101,7 @@ uint8_t lora_module_join_otaa() {
 	if(strstr(buffer, "accepted") != NULL) {
 		return 1;
 	}
-	else if(strstr(buffer, "accepted") != NULL) {
+	else if(strstr(buffer, "ok") != NULL) {
 		return 0;
 	}
 	else {

@@ -136,7 +136,11 @@ void StartDefaultTask(void const * argument)
   //lora_module_send_command(RN_JOIN_OTAA_MODE, NULL);
 
   // Try to join the network
-  while(lora_module_join_otaa()) {osDelay(1000);};
+  uint8_t joined = 0;
+  while(joined != 1) {
+	  osDelay(1000);
+	  joined = lora_module_join_otaa();
+  }
 
   for(;;)
   {
