@@ -71,6 +71,6 @@
 void lora_module_reboot();
 void lora_module_set_gpio(char *gpio, uint8_t state);
 void lora_module_send_command(char *command, char *value);
-uint8_t lora_module_join_otaa();
+void lora_module_join_otaa();
 
 #endif /* INC_LORA_H_ */

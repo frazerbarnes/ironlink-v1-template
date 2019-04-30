@@ -40,7 +40,7 @@ void lora_module_set_gpio(char *gpio, uint8_t state) {
 		memset(buffer, '\0', 30);
 		HAL_UART_Receive(&huart3, (uint8_t*)buffer, 30, 200);
 
-		CDC_Transmit_FS((uint8_t*)buffer, 30);
+		//CDC_Transmit_FS((uint8_t*)buffer, 30);
 	}
 }
 
@@ -80,7 +80,7 @@ void lora_module_send_command(char *command, char *value) {
 	}
 }
 
-uint8_t lora_module_join_otaa() {
+void lora_module_join_otaa() {
 
 	char buffer[50] = {'\0'};
 	uint8_t len = 0;
@@ -91,21 +91,11 @@ uint8_t lora_module_join_otaa() {
 		len = sprintf(buffer, "%s\r\n", RN_JOIN_OTAA_MODE);
 		HAL_UART_Transmit(&huart3, (uint8_t*)buffer, len, 100);
 		memset(buffer, '\0', 50);
-		if (HAL_UART_Receive(&huart3, (uint8_t*)buffer, 50, 500) == HAL_TIMEOUT) {
+		if (HAL_UART_Receive(&huart3, (uint8_t*)buffer, 50, 1000) == HAL_TIMEOUT) {
 			i = 0;
 		}
 
 		CDC_Transmit_FS((uint8_t*)buffer, 50);
-	}
-
-	if(strstr(buffer, "accepted") != NULL) {
-		return 1;
-	}
-	else if(strstr(buffer, "ok") != NULL) {
-		return 0;
-	}
-	else {
-		return 0;
 	}
 
 }

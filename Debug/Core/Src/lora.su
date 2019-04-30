@@ -1,4 +1,4 @@
 lora.c:10:6:lora_module_reboot	72	static
 lora.c:29:6:lora_module_set_gpio	56	static
 lora.c:47:6:lora_module_send_command	80	static
-lora.c:83:9:lora_module_join_otaa	72	static
+lora.c:83:6:lora_module_join_otaa	72	static

@@ -81,8 +81,7 @@ void StartDefaultTask(void const * argument)
   /* init code for USB_DEVICE */
   MX_USB_DEVICE_Init();
 
-  osDelay(1000);
-
+  osDelay(3000);
   lora_module_reboot();
   osDelay(3000);
 
@@ -135,21 +134,15 @@ void StartDefaultTask(void const * argument)
   //CDC_Transmit_FS((uint8_t*)"RN_JOIN_OTAA_MODE\r\n", sizeof("RN_JOIN_OTAA_MODE\r\n"));;
   //lora_module_send_command(RN_JOIN_OTAA_MODE, NULL);
 
-  // Try to join the network
-  uint8_t joined = 0;
-  while(joined != 1) {
-	  osDelay(1000);
-	  joined = lora_module_join_otaa();
-  }
-
   for(;;)
   {
+	  lora_module_join_otaa();
+	  osDelay(5000);
 
-	  // Send hello world to the gateway
-	  osDelay(9000);
-	  lora_module_send_command(RN_MAC_TX_CMD, "cnf 1 48656c6c6f20576f726c6421");
+	  // Say hello world to the gateway
+	  //osDelay(9000);
+	  //lora_module_send_command(RN_MAC_TX_CMD, "cnf 1 48656c6c6f20576f726c6421");
   }
-  /* USER CODE END StartDefaultTask */
 }
 
 /* USER CODE BEGIN Header_StartServiceTask */
