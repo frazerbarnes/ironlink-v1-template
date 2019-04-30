@@ -97,9 +97,6 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART3_UART_Init();
 
-  // Init out uart RX flag
-  uart_rx_flag = 0;
-
   /* Call init function for freertos objects (in freertos.c) */
   MX_FREERTOS_Init();
 

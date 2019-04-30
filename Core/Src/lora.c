@@ -11,19 +11,13 @@ void lora_module_reboot() {
 
 	char buffer[50] = {'\0'};
 	uint8_t len = 0;
-	uint8_t i = 1;
 
-	while(i) {
+	len = sprintf(buffer, "%s\r\n", RN_SYS_RESET);
+	HAL_UART_Transmit(&huart3, (uint8_t*)buffer, len, 100);
+	memset(buffer, '\0', 50);
+	HAL_UART_Receive(&huart3, (uint8_t*)buffer, 50, 1000);
 
-		len = sprintf(buffer, "%s\r\n", RN_SYS_RESET);
-		HAL_UART_Transmit(&huart3, (uint8_t*)buffer, len, 100);
-		memset(buffer, '\0', 50);
-		if (HAL_UART_Receive(&huart3, (uint8_t*)buffer, 50, 5000) == HAL_TIMEOUT) {
-			i = 0;
-		}
-
-		CDC_Transmit_FS((uint8_t*)buffer, 50);
-	}
+	CDC_Transmit_FS((uint8_t*)buffer, 50);
 }
 
 void lora_module_set_gpio(char *gpio, uint8_t state) {
@@ -84,18 +78,11 @@ void lora_module_join_otaa() {
 
 	char buffer[50] = {'\0'};
 	uint8_t len = 0;
-	uint8_t i = 1;
 
-	while(i) {
+	len = sprintf(buffer, "%s\r\n", RN_JOIN_OTAA_MODE);
+	HAL_UART_Transmit(&huart3, (uint8_t*)buffer, len, 100);
+	memset(buffer, '\0', 50);
+	HAL_UART_Receive(&huart3, (uint8_t*)buffer, 50, 1000);
 
-		len = sprintf(buffer, "%s\r\n", RN_JOIN_OTAA_MODE);
-		HAL_UART_Transmit(&huart3, (uint8_t*)buffer, len, 100);
-		memset(buffer, '\0', 50);
-		if (HAL_UART_Receive(&huart3, (uint8_t*)buffer, 50, 1000) == HAL_TIMEOUT) {
-			i = 0;
-		}
-
-		CDC_Transmit_FS((uint8_t*)buffer, 50);
-	}
-
+	CDC_Transmit_FS((uint8_t*)buffer, 50);
 }

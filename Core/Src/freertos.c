@@ -137,7 +137,7 @@ void StartDefaultTask(void const * argument)
   for(;;)
   {
 	  lora_module_join_otaa();
-	  osDelay(5000);
+	  osDelay(9000);
 
 	  // Say hello world to the gateway
 	  //osDelay(9000);
